@@ -1,0 +1,30 @@
+---
+- name: "build container with ansible"
+  hosts: localhost
+  tasks:
+
+  - name: stop running ansible-container
+    command: sudo docker stop ansible-container
+    ignore_errors: yes
+  
+  - name: delete ansible-container
+    command: sudo docker rm ansible-container
+    ignore_errors: yes
+
+  - name: delete ansible-img
+    command: sudo docker rmi ansible-img
+    ignore_errors: yes
+
+  - name: build ansible-img from dockerfile
+    command: sudo docker build -t ansible-img .
+
+  - name: create a tag to ansible-img
+    command: sudo docker tag ansible-img wiameelyakini/ansible-hub
+
+  - name: push image to dockerhub
+    command: sudo docker push wiameelyakini/ansible-hub
+
+  - name: run ansible-container from ansible-img
+    command: sudo docker run -d --name ansible-container -p 8087:80 ansible-img
+
+
