@@ -3,26 +3,23 @@
   hosts: localhost
   tasks:
 
-  - name: stop running ansible-container
-    command: sudo docker stop ansible-container
+  - name: stop running github-project-container
+    command: sudo docker stop github-project-container
     ignore_errors: yes
   
-  - name: delete ansible-container
-    command: sudo docker rm ansible-container
+  - name: delete github-project-container
+    command: sudo docker rm github-project-container
     ignore_errors: yes
 
-  - name: delete ansible-img
-    command: sudo docker rmi ansible-img
+  - name: delete github-project-img
+    command: sudo docker rmi github-project-img
     ignore_errors: yes
 
-  - name: build ansible-img from dockerfile
-    command: sudo docker build -t ansible-img .
+  - name: build github-project-img from dockerfile
+    command: sudo docker build -t github-project-img .
 
-  - name: create a tag to ansible-img
-    command: sudo docker tag ansible-img wiameelyakini/ansible-hub
-
-  - name: push image to dockerhub
-    command: sudo docker push wiameelyakini/ansible-hub
+  - name: create a tag to github-project-img
+    command: sudo docker tag github-project-img wiameelyakini/github-project
 
   - name: run ansible-container from ansible-img
     command: sudo docker run -d --name ansible-container -p 8087:80 ansible-img
